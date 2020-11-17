@@ -1,0 +1,11 @@
+{
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "../"
+        }
+    ],
+    "require": {
+        "jamiemufu/cloud-flare-purger": "dev-main"
+    }
+}
