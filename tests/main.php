@@ -9,7 +9,6 @@ $token = '';
 //ZoneID is the site you have access to clear caches on Cloud Flare
 $zoneId = '';
 
-
 $request = new CloudFlarePurger($token, $zoneId);
 
 //Verify Token
