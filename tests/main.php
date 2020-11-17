@@ -4,7 +4,7 @@ require_once __DIR__ . '/vendor/autoload.php';
 
 use CloudFlarePurger\CloudFlarePurger;
 
-//Token is generate from Cloud Flare user account
+//Token is generated from Cloud Flare user account
 $token = '';
 //ZoneID is the site you have access to clear caches on Cloud Flare
 $zoneId = '';
