@@ -25,4 +25,12 @@ $urls = [
 
 $purgeUrls = $request->purgeUrls($urls);
 
-?>
+//purge prefixes
+
+$prefixes = [
+    'https://example.com/prefix_1',
+    'https://example.com/prefix_2'
+];
+
+$purgePrefixes = $request->purgePrefixes($prefixes);
+
