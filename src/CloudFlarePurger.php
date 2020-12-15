@@ -3,8 +3,9 @@
 namespace CloudFlarePurger;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
 
-class CloudFlarePurger 
+class CloudFlarePurger
 {
 
     protected string $token;
@@ -13,7 +14,7 @@ class CloudFlarePurger
     private string $verifyUrl = 'user/tokens/verify';
     private string $purgeUrl;
     private Object $client;
-    
+
     /**
      * Instantiate a new Guzzle client with Auth header set
      *
@@ -36,6 +37,7 @@ class CloudFlarePurger
      * Verify correct Token
      *
      * @return Object
+     * @throws GuzzleException
      */
     public function verifyToken():Object
     {
@@ -48,6 +50,7 @@ class CloudFlarePurger
      * Purge Everything
      *
      * @return Object
+     * @throws GuzzleException
      */
     public function purgeAll():Object
     {
@@ -65,17 +68,19 @@ class CloudFlarePurger
      *
      * @param array $urls
      * @return Object
+     * @throws GuzzleException
      */
     public function purgeUrls(array $urls):Object
-    {   
+    {
+        $arr = array();
         //build body to post
         //contains file (url) and url
         foreach($urls as $url)
         {
             $arr['files'][] = $url;
             $arr['files'][] = ['url' => $url];
-        }   
-       
+        }
+
         $json = json_encode($arr);
 
         $response = $this->client->request('POST', $this->purgeUrl, [
@@ -83,6 +88,33 @@ class CloudFlarePurger
         ]);
 
         return $response->getBody();
+    }
+
+    /**
+     * Purge prefixes (easier and faster than URL's)
+     * (https://api.cloudflare.com/#zone-purge-files-by-cache-tags,-host-or-prefix)
+     * ENTERPRISE ONLY
+     *
+     * @param array $prefixes
+     * @return Object
+     * @throws GuzzleException
+     */
+    public function purgePrefixes(array $prefixes):Object
+    {
+        $arr = array();
+
+        foreach($prefixes as $prefix) {
+            $arr['prefixes'] = $prefix;
+        }
+
+        $json = json_encode($arr);
+
+        $response = $this->client->request('POST', $this->purgeUrl, [
+            'body' => $json
+        ]);
+
+        return $response->getBody();
+
     }
 
 }
